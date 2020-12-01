@@ -4,7 +4,7 @@ namespace App;
 
 use Hash;
 use Carbon\Carbon;
-use \DateTimeInterface;
+use DateTimeInterface;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Auth\Notifications\ResetPassword;

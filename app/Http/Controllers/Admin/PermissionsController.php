@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Permission;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\MassDestroyPermissionRequest;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StorePermissionRequest;
 use App\Http\Requests\UpdatePermissionRequest;
-use App\Permission;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Requests\MassDestroyPermissionRequest;
 
 class PermissionsController extends Controller
 {

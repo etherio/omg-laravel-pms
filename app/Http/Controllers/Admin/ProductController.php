@@ -23,7 +23,7 @@ class ProductController extends Controller
     {
         abort_if(Gate::denies('product_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $products = Product::with(['categories', 'tags', 'media'])->get();
+        $products = Product::with(['inventories', 'categories', 'tags', 'media'])->get();
 
         return view('admin.products.index', compact('products'));
     }
@@ -104,6 +104,10 @@ class ProductController extends Controller
         abort_if(Gate::denies('product_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $product->delete();
+
+        if ($inventory = $product->inventories()) {
+            $inventory->delete();
+        }
 
         return back();
     }

@@ -6,11 +6,11 @@ use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Role extends Model
+class Inventory extends Model
 {
     use SoftDeletes;
 
-    public $table = 'roles';
+    public $table = 'inventories';
 
     protected $dates = [
         'created_at',
@@ -19,7 +19,8 @@ class Role extends Model
     ];
 
     protected $fillable = [
-        'title',
+        'stocks',
+        'product_id',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -30,8 +31,8 @@ class Role extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
-    public function permissions()
+    public function product()
     {
-        return $this->belongsToMany(Permission::class);
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

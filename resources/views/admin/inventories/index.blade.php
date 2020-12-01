@@ -1,47 +1,38 @@
 @extends('layouts.admin')
 @section('content')
-    @can('product_create')
+    @can('inventory_create')
         <div style="margin-bottom: 10px;" class="row">
             <div class="col-lg-12">
-                <a class="btn btn-success" href="{{ route('admin.products.create') }}">
-                    {{ trans('global.add') }} {{ trans('cruds.product.title_singular') }}
+                <a class="btn btn-success" href="{{ route('admin.inventories.create') }}">
+                    {{ trans('global.add') }} {{ trans('cruds.inventory.title_singular') }}
                 </a>
             </div>
         </div>
     @endcan
     <div class="card">
         <div class="card-header">
-            {{ trans('cruds.product.title_singular') }} {{ trans('global.list') }}
+            {{ trans('cruds.inventory.title_singular') }} {{ trans('global.list') }}
         </div>
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class=" table table-bordered table-striped table-hover datatable datatable-Product">
+                <table class=" table table-bordered table-striped table-hover datatable datatable-Inventory">
                     <thead>
                         <tr>
                             <th width="10">
 
                             </th>
                             <th>
-                                {{ trans('cruds.product.fields.id') }}
-                            </th>
-                            <th>
-                                {{ trans('cruds.product.fields.name') }}
-                            </th>
-                            <th>
-                                {{ trans('cruds.product.fields.description') }}
-                            </th>
-                            <th>
-                                {{ trans('cruds.product.fields.price') }}
+                                {{ trans('cruds.inventory.fields.id') }}
                             </th>
                             <th>
                                 {{ trans('cruds.inventory.fields.stocks') }}
                             </th>
                             <th>
-                                {{ trans('cruds.product.fields.category') }}
+                                {{ trans('cruds.inventory.fields.product') }}
                             </th>
                             <th>
-                                {{ trans('cruds.product.fields.tag') }}
+                                {{ trans('cruds.product.fields.description') }}
                             </th>
                             <th>
                                 &nbsp;
@@ -49,60 +40,40 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($products as $key => $product)
-                            <tr data-entry-id="{{ $product->id }}">
+                        @foreach ($inventories as $key => $inventory)
+                            <tr data-entry-id="{{ $inventory->id }}">
                                 <td>
 
                                 </td>
                                 <td>
-                                    {{ $product->id ?? '' }}
+                                    {{ $inventory->id ?? '' }}
                                 </td>
                                 <td>
-                                    @if ($product->photo)
-                                        <a href="{{ $product->photo->getUrl() }}" target="_blank"
-                                            style="display: inline-block">
-                                            <img src="{{ $product->photo->getUrl('thumb') }}">
-                                        </a>
-                                    @endif
-                                    <span class="ml-2">{{ $product->name ?? '' }}</span>
+                                    {{ $inventory->stocks ?? '' }}
                                 </td>
                                 <td>
-                                    {{ $product->description ?? '' }}
+                                    {{ $inventory->product->name ?? '' }}
                                 </td>
                                 <td>
-                                    {{ $product->price ?? '' }}
+                                    {{ $inventory->product->description ?? '' }}
                                 </td>
                                 <td>
-                                    <span class="{{ $product->inventories ? '' : 'text-muted' }}">
-                                        {{ $product->inventories->stocks ?? 'out of stock' }}
-                                    </span>
-                                </td>
-                                <td>
-                                    @foreach ($product->categories as $key => $category)
-                                        <span class="badge badge-info">{{ $category->name }}</span>
-                                    @endforeach
-                                </td>
-                                <td>
-                                    @foreach ($product->tags as $key => $tag)
-                                        <span class="badge badge-info">{{ $tag->name }}</span>
-                                    @endforeach
-                                </td>
-                                <td>
-                                    @can('product_show')
+                                    @can('inventory_show')
                                         <a class="btn btn-xs btn-primary"
-                                            href="{{ route('admin.products.show', $product->id) }}">
+                                            href="{{ route('admin.inventories.show', $inventory->id) }}">
                                             {{ trans('global.view') }}
                                         </a>
                                     @endcan
 
-                                    @can('product_edit')
-                                        <a class="btn btn-xs btn-info" href="{{ route('admin.products.edit', $product->id) }}">
+                                    @can('inventory_edit')
+                                        <a class="btn btn-xs btn-info"
+                                            href="{{ route('admin.inventories.edit', $inventory->id) }}">
                                             {{ trans('global.edit') }}
                                         </a>
                                     @endcan
 
-                                    @can('product_delete')
-                                        <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST"
+                                    @can('inventory_delete')
+                                        <form action="{{ route('admin.inventories.destroy', $inventory->id) }}" method="POST"
                                             onsubmit="return confirm('{{ trans('global.areYouSure') }}');"
                                             style="display: inline-block;">
                                             <input type="hidden" name="_method" value="DELETE">
@@ -111,7 +82,9 @@
                                                 value="{{ trans('global.delete') }}">
                                         </form>
                                     @endcan
+
                                 </td>
+
                             </tr>
                         @endforeach
                     </tbody>
@@ -128,12 +101,12 @@
     <script>
         $(function() {
             let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-            @can('product_delete')
+            @can('inventory_delete')
                 let deleteButtonTrans = '{{ trans('
                 global.datatables.delete ') }}'
                 let deleteButton = {
                     text: deleteButtonTrans,
-                    url: "{{ route('admin.products.massDestroy') }}",
+                    url: "{{ route('admin.inventories.massDestroy') }}",
                     className: 'btn-danger',
                     action: function(e, dt, node, config) {
                         var ids = $.map(dt.rows({
@@ -178,7 +151,7 @@
                 ],
                 pageLength: 100,
             });
-            let table = $('.datatable-Product:not(.ajaxTable)').DataTable({
+            let table = $('.datatable-Inventory:not(.ajaxTable)').DataTable({
                 buttons: dtButtons
             })
             $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e) {
