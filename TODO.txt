@@ -1,3 +1,0 @@
-bugsnag/bugsnag-laravel doctrine/dbal fideloper/proxy fruitcake/laravel-cors guzzlehttp/guzzle laravel/dusk laravel/framework laravel/tinker laravel/ui yajra/laravel-datatables-oracle spatie/laravel-medialibrary laravel/passport
-
---dev facade/ignition fzaninotto/faker mockery/mockery nunomaduro/collision phpunit/phpunit
